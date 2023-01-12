@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Get retirement date</title>
+</head>
+<body>
+<input type="text" id="dob" placeholder="DOB as: mm-dd-yyyy" autocomplete="on">
+<input type="text" id="doa" placeholder="DOA as: mm-dd-yyyy"  autocomplete="on">
+<input type="button" onclick="proc_ret()" value="calculate">
+<h1>you will retire in : <span id="ret"></span> </h1>
+</body>
+<script>
+    // 07-25-1987
+    // '01-12-2008'
+    function cal_ret_by_yr(dob, doa){
+        let ba = Math.abs((new Date(Date.now() - dob.getTime())).getUTCFullYear() - 1970);
+        let aa = Math.abs((new Date(Date.now() - doa.getTime())).getUTCFullYear() - 1970);
+        let ba_ok = 60 - ba;
+        let aa_ok = 35 - aa;
+        if(ba_ok <= aa_ok){
+            return ba_ok
+        }
+        return aa_ok;
+    }
+    function cal_ret_by_date(b, a){
+        b = b.replace(/-/g,'/');
+        a = a.replace(/-/g,'/');
+        let dob = new Date(b);
+        let doa = new Date(a);
+        let ba = Math.abs((new Date(Date.now() - dob.getTime())).getUTCFullYear() - 1970);
+        let aa = Math.abs((new Date(Date.now() - doa.getTime())).getUTCFullYear() - 1970);
+        let ba_ok = 60 - ba;
+        let aa_ok = 35 - aa;
+        if(ba_ok <= aa_ok){
+            let arr1 = b.split("/");
+            let st1 = `${arr1[0]}/${arr1[1]}/${ba_ok + new Date().getFullYear()}`;
+            return new Date(st1).toLocaleDateString(undefined, {
+                day: 'numeric',
+                month: 'numeric',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+            });
+        }
+        let arr = a.split("/");
+        let st = `${arr[0]}/${arr[1]}/${aa_ok + new Date().getFullYear()}`;
+        return new Date(st).toLocaleDateString(undefined, {
+            day: 'numeric',
+            month: 'numeric',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+        });
+    }
+    function proc_ret(){
+        let dob = document.getElementById('dob').value;
+        let doa = document.getElementById('doa').value;
+        document.getElementById('ret').innerHTML = cal_ret_by_date(dob, doa);
+    }
+
+</script>
+</html>
